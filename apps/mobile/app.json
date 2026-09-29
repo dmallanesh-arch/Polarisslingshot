@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "Slingshot SL",
+    "slug": "slingshot-sl",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0b0b0c",
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.example.slingshotsl" },
+    "android": { "package": "com.example.slingshotsl", "edgeToEdgeEnabled": true },
+    "plugins": ["expo-font"]
+  }
+}

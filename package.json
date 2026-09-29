@@ -1,0 +1,29 @@
+{
+  "name": "polaris-slingshot",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Slingshot SL experience: Next.js 15 web, Express API and React Native (Expo) mobile app.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev:api & npm run dev:web",
+    "dev:web": "npm run dev -w @slingshot/web",
+    "dev:api": "npm run dev -w @slingshot/api",
+    "dev:mobile": "npm run start -w @slingshot/mobile",
+    "build": "npm run build -w @slingshot/api && npm run build -w @slingshot/web",
+    "start": "npm run start -w @slingshot/api & npm run start -w @slingshot/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "overrides": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "postcss": "^8.5.23"
+  }
+}

@@ -1,0 +1,96 @@
+export type TransmissionId = 'manual' | 'auto';
+
+export interface PaintColor {
+  id: string;
+  name: string;
+  /** Primary body colour. */
+  paint: string;
+  /** Trim / graphics colour. */
+  accent: string;
+  /** Two-stop gradient used for swatches: [light, dark]. */
+  swatch: [string, string];
+}
+
+export interface Transmission {
+  id: TransmissionId;
+  label: string;
+  price: number;
+  description: string;
+}
+
+export interface Highlight {
+  value: string;
+  unit: string;
+  label: string;
+}
+
+export interface SpecGroup {
+  group: string;
+  rows: [label: string, value: string][];
+}
+
+export interface LineupModel {
+  id: string;
+  name: string;
+  /** CAD MSRP, or null when the price is "see dealer". */
+  price: number | null;
+  paint: string;
+  tag: string;
+  current?: boolean;
+  bullets: string[];
+}
+
+export type GalleryScene = 'sunset' | 'night' | 'studio' | 'mountain';
+
+export interface GalleryItem {
+  colorId: string;
+  scene: GalleryScene;
+  caption: string;
+}
+
+export type AccessoryIcon = 'wind' | 'bag' | 'seat' | 'roof' | 'light' | 'cover';
+
+export interface Accessory {
+  name: string;
+  category: string;
+  icon: AccessoryIcon;
+}
+
+export interface Feature {
+  id: string;
+  title: string;
+  body: string;
+  bullets: string[];
+}
+
+export interface Offer {
+  tag: string;
+  title: string;
+  body: string;
+  cta: string;
+}
+
+export interface Dealer {
+  id: string;
+  name: string;
+  city: string;
+  province: string;
+  /** First letter(s) of postal FSA codes this dealer serves. */
+  fsaPrefixes: string[];
+  phone: string;
+  demo: boolean;
+}
+
+export interface ModelPage {
+  id: string;
+  year: number;
+  name: string;
+  shortName: string;
+  tagline: string;
+  lede: string;
+  colors: PaintColor[];
+  transmissions: Transmission[];
+  highlights: Highlight[];
+  features: Feature[];
+  gallery: GalleryItem[];
+}

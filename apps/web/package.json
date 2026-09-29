@@ -1,0 +1,28 @@
+{
+  "name": "@slingshot/web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@slingshot/shared": "1.0.0",
+    "next": "15.5.26",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "server-only": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.4",
+    "@types/react": "~19.2.0",
+    "@types/react-dom": "~19.2.0",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.26",
+    "@eslint/eslintrc": "^3",
+    "typescript": "5.9.3"
+  }
+}
