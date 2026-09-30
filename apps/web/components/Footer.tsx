@@ -1,5 +1,5 @@
 import type { LineupModel } from '@slingshot/shared';
-import { LogoMark } from './Icons';
+import Image from 'next/image';
 import { Newsletter } from './Newsletter';
 
 const COLUMNS = [
@@ -21,8 +21,8 @@ export function Footer({ lineup }: { lineup: LineupModel[] }) {
       <div className="container">
         <div className="newsletter">
           <div>
-            <h2 className="h3">Stay in the loop</h2>
-            <p className="muted">Get the latest Slingshot news, events and offers.</p>
+            <h2 className="footer-title">Stay in the loop</h2>
+            <p>Get the latest Slingshot news, events and offers.</p>
           </div>
           <Newsletter />
         </div>
@@ -59,16 +59,15 @@ export function Footer({ lineup }: { lineup: LineupModel[] }) {
         </div>
 
         <div className="footer-base">
-          <a className="logo logo--sm" href="#top" aria-label="Back to top">
-            <LogoMark />
-            <span className="logo__word">SLINGSHOT</span>
+          <a className="logo" href="#top" aria-label="Back to top">
+            <Image src="/images/slingshot-logo-white.png" alt="Slingshot" width={140} height={22} />
           </a>
           <ul className="footer-base__links">
             {['Privacy Policy', 'Terms of Use', 'Accessibility', 'Cookie Settings'].map((l) => (
               <li key={l}><a href="#footer">{l}</a></li>
             ))}
           </ul>
-          <p className="small muted">&copy; {new Date().getFullYear()}. All rights reserved.</p>
+          <p className="small">&copy; {new Date().getFullYear()}. All rights reserved.</p>
         </div>
       </div>
     </footer>

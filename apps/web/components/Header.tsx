@@ -1,39 +1,20 @@
 'use client';
 
 import { formatCAD, type LineupModel } from '@slingshot/shared';
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, CloseIcon, LogoMark, PinIcon, SearchIcon } from './Icons';
-import { Vehicle } from './Vehicle';
+import { ChevronDown, CloseIcon, PinIcon, SearchIcon } from './Icons';
 
 const NAV = [
-  { href: '#build', label: 'Build & Price' },
-  { href: '#offers', label: 'Offers' },
-  { href: '#accessories', label: 'Accessories & Apparel' },
-  { href: '#demo', label: 'Experience' },
-  { href: '#footer', label: 'Owners' },
+  { href: '#accessories', label: 'Parts & Accessories' },
+  { href: '#apparel', label: 'Clothing & Gear' },
+  { href: '#tools', label: 'Shopping Tools' },
 ];
 
-export function UtilityBar() {
+export function PromoBar() {
   return (
-    <div className="utility-bar">
-      <div className="container utility-bar__inner">
-        <p className="utility-bar__promo">
-          <span className="badge">Offer</span>
-          Low-rate financing available on select 2026 models.
-          <a href="#offers">See offers</a>
-        </p>
-        <ul className="utility-bar__links">
-          <li>
-            <a href="#dealer"><PinIcon />Find a Dealer</a>
-          </li>
-          <li><a href="#demo">Rent &amp; Demo</a></li>
-          <li className="lang" aria-label="Language">
-            <a href="#" aria-current="true">EN</a>
-            <span>|</span>
-            <a href="#" lang="fr-CA">FR</a>
-          </li>
-        </ul>
-      </div>
+    <div className="promo-bar">
+      <a href="#offers">Low-rate financing available on select 2026 models. Explore offers.</a>
     </div>
   );
 }
@@ -48,9 +29,7 @@ export function Header({ lineup }: { lineup: LineupModel[] }) {
   // Close menus on outside click / Escape.
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
-        setMegaOpen(false);
-      }
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) setMegaOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -78,10 +57,9 @@ export function Header({ lineup }: { lineup: LineupModel[] }) {
 
   return (
     <header className="site-header" id="top" ref={headerRef}>
-      <div className="container site-header__inner">
+      <div className="site-header__inner">
         <a className="logo" href="#top" aria-label="Slingshot home">
-          <LogoMark />
-          <span className="logo__word">SLINGSHOT</span>
+          <Image src="/images/slingshot-logo-white.png" alt="Slingshot" width={160} height={26} priority />
         </a>
 
         <nav className="main-nav" aria-label="Primary">
@@ -90,10 +68,10 @@ export function Header({ lineup }: { lineup: LineupModel[] }) {
               <button
                 className="main-nav__link"
                 aria-expanded={megaOpen}
-                aria-controls="mega-models"
+                aria-controls="mega-vehicles"
                 onClick={() => setMegaOpen((v) => !v)}
               >
-                Models <ChevronDown />
+                Vehicles <ChevronDown />
               </button>
             </li>
             {NAV.map((item) => (
@@ -105,12 +83,12 @@ export function Header({ lineup }: { lineup: LineupModel[] }) {
         </nav>
 
         <div className="site-header__actions">
-          <button className="icon-btn" aria-label="Search" onClick={() => setSearchOpen(true)}>
+          <button className="icon-link" aria-label="Search" onClick={() => setSearchOpen(true)}>
             <SearchIcon />
           </button>
-          <a className="btn btn--primary btn--sm hide-sm" href="#dealer">Find a Dealer</a>
+          <a className="icon-link hide-sm" href="#dealer"><PinIcon /> Find Dealer</a>
           <button
-            className="icon-btn burger"
+            className="burger"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
@@ -122,14 +100,13 @@ export function Header({ lineup }: { lineup: LineupModel[] }) {
       </div>
 
       {megaOpen && (
-        <div className="mega" id="mega-models">
+        <div className="mega" id="mega-vehicles">
           <div className="container">
-            <p className="mega__eyebrow">2026 Lineup</p>
             <ul className="mega__grid">
               {lineup.map((m) => (
                 <li className="mega__item" key={m.id}>
                   <a href={m.current ? '#overview' : '#compare'} aria-current={m.current ? 'page' : undefined} onClick={closeAll}>
-                    <Vehicle id={`mega-${m.id}`} paint={m.paint} />
+                    <Image src={m.image} alt="" width={384} height={216} />
                     <p className="mega__name">{m.name}</p>
                     <p className="mega__price">
                       {m.price ? `Starting at ${formatCAD(m.price)} MSRP` : 'See dealer for pricing'}
@@ -139,8 +116,8 @@ export function Header({ lineup }: { lineup: LineupModel[] }) {
               ))}
             </ul>
             <div className="mega__foot">
-              <a className="link-arrow" href="#compare" onClick={closeAll}>Compare models</a>
-              <a className="link-arrow" href="#build" onClick={closeAll}>Build &amp; Price</a>
+              <a className="btn btn--dark btn--sm" href="#compare" onClick={closeAll}>Explore Lineup</a>
+              <a className="btn btn--outline btn--sm" href="#overview" onClick={closeAll}>Build &amp; Price</a>
             </div>
           </div>
         </div>
@@ -148,26 +125,24 @@ export function Header({ lineup }: { lineup: LineupModel[] }) {
 
       {searchOpen && (
         <div className="search">
-          <div className="container search__inner">
-            <form role="search" onSubmit={(e) => e.preventDefault()}>
-              <label className="visually-hidden" htmlFor="q">Search</label>
-              <input ref={searchRef} id="q" type="search" placeholder="Search models, accessories, owners…" autoComplete="off" />
-            </form>
-            <button className="icon-btn" aria-label="Close search" onClick={() => setSearchOpen(false)}>
+          <form className="search__inner" role="search" onSubmit={(e) => e.preventDefault()}>
+            <label className="visually-hidden" htmlFor="q">Search</label>
+            <input ref={searchRef} id="q" type="search" placeholder="Search Keyword/Part #" autoComplete="off" />
+            <button type="button" className="icon-link" aria-label="Close search" onClick={() => setSearchOpen(false)}>
               <CloseIcon />
             </button>
-          </div>
+          </form>
         </div>
       )}
 
       {menuOpen && (
         <div className="mobile-menu" id="mobile-menu">
           <ul>
-            <li><a href="#compare" onClick={closeAll}>Models</a></li>
+            <li><a href="#compare" onClick={closeAll}>Vehicles</a></li>
             {NAV.map((item) => (
               <li key={item.href}><a href={item.href} onClick={closeAll}>{item.label}</a></li>
             ))}
-            <li><a href="#dealer" onClick={closeAll}>Find a Dealer</a></li>
+            <li><a href="#dealer" onClick={closeAll}>Find Dealer</a></li>
           </ul>
         </div>
       )}

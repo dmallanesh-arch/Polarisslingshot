@@ -13,10 +13,10 @@ import {
 } from '@slingshot/shared';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
-import { FlatList, Linking, Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { FlatList, Image, Linking, Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { findDealers, subscribe } from './api';
 import { Accent, Button, Eyebrow, Heading, Segmented } from './components/ui';
-import { Vehicle } from './components/Vehicle';
+import { img } from './images';
 import { colors, fonts, space } from './theme';
 
 const TRANS_OPTIONS: { id: TransmissionId; label: string }[] = [
@@ -36,7 +36,12 @@ export function Showroom({ model, onBuild }: { model: ModelPage; onBuild: () => 
     <>
       <LinearGradient colors={['#25262c', '#111215', '#070708']} style={s.hero}>
         <View style={s.glow} />
-        <Vehicle id="hero" paint={color.paint} accent={color.accent} width={width - 16} />
+        <Image
+          source={img(color.image)}
+          accessibilityLabel={`${model.year} ${model.name} in ${color.name}`}
+          style={{ width: width - 16, height: ((width - 16) * 9) / 16, alignSelf: 'center' }}
+          resizeMode="contain"
+        />
         <View style={s.pad}>
           <Eyebrow>{`${model.year} Slingshot`}</Eyebrow>
           <Text style={s.heroTitle}>SLINGSHOT</Text>
@@ -60,7 +65,7 @@ export function Showroom({ model, onBuild }: { model: ModelPage; onBuild: () => 
         <Eyebrow dark>Make it yours</Eyebrow>
         <Heading dark size={34}>Choose your colour</Heading>
         <Text style={[s.body, { color: colors.mutedInk, marginVertical: space.sm }]}>
-          Three distinct colours, each finished with metal badges and SL accent graphics.
+          White Lightning, Earth Blue or Spectra Orange, each finished with metal badges and SL accent graphics.
         </Text>
         <View style={s.swatches} accessibilityRole="radiogroup">
           {model.colors.map((c) => {
@@ -74,7 +79,7 @@ export function Showroom({ model, onBuild }: { model: ModelPage; onBuild: () => 
                 onPress={() => setColorId(c.id)}
                 style={[s.swatchRing, active && { borderColor: colors.ink }]}
               >
-                <LinearGradient colors={[c.swatch[0], c.paint, c.swatch[1]]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.swatch} />
+                <Image source={img(c.swatchImage)} style={s.swatch} />
               </Pressable>
             );
           })}
@@ -113,12 +118,7 @@ export function Features({ features }: { features: Feature[] }) {
           <Text style={s.featureNum}>{String(i + 1).padStart(2, '0')}</Text>
           <Heading size={28}>{f.title}</Heading>
           <Text style={[s.body, { marginVertical: space.sm }]}>{f.body}</Text>
-          {f.bullets.map((b) => (
-            <View key={b} style={s.tick}>
-              <View style={s.tickMark} />
-              <Text style={s.tickText}>{b}</Text>
-            </View>
-          ))}
+          <Image source={img(f.image)} style={s.featurePhoto} resizeMode="cover" />
         </View>
       ))}
     </View>
@@ -194,7 +194,7 @@ export function Compare({ lineup }: { lineup: LineupModel[] }) {
         renderItem={({ item: m }) => (
           <View style={[s.card, m.current && s.cardCurrent]}>
             <Text style={[s.cardTag, m.current && s.cardTagCurrent]}>{(m.current ? 'You are here' : m.tag).toUpperCase()}</Text>
-            <Vehicle id={`cmp-${m.id}`} paint={m.paint} width={228} />
+            <Image source={img(m.image)} accessibilityLabel={m.name} style={s.cardPhoto} resizeMode="contain" />
             <Text style={s.cardName}>{m.name.toUpperCase()}</Text>
             <Text style={s.small}>
               {m.price ? <>Starting at <Text style={s.cardPrice}>{formatCAD(m.price)}</Text> MSRP</> : 'See dealer for pricing'}
@@ -337,9 +337,8 @@ const s = StyleSheet.create({
   statLabel: { fontFamily: fonts.displayBold, fontSize: 12, letterSpacing: 1.4, color: '#fff', textAlign: 'center', paddingHorizontal: 8 },
   feature: { marginTop: space.xl },
   featureNum: { fontFamily: fonts.display, fontSize: 56, color: 'rgba(255,255,255,0.18)', lineHeight: 58 },
-  tick: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 10, borderTopWidth: 1, borderTopColor: colors.line },
-  tickMark: { width: 12, height: 7, borderLeftWidth: 2, borderBottomWidth: 2, borderColor: colors.brandHi, transform: [{ rotate: '-45deg' }], marginTop: -4 },
-  tickText: { fontFamily: fonts.bodyMedium, fontSize: 15, color: colors.text, flex: 1 },
+  featurePhoto: { width: '100%', aspectRatio: 1920 / 1055 },
+  cardPhoto: { width: 228, height: 128 },
   specHighlights: { flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#fff', borderWidth: 1, borderColor: colors.lineInk, marginBottom: space.lg },
   specHighlight: { width: '50%', padding: 16, borderColor: colors.lineInk, borderWidth: 0.5 },
   specHighlightValue: { fontFamily: fonts.display, fontSize: 36, color: colors.ink },

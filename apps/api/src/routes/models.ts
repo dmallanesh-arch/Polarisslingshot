@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import {
   accessories,
+  accessorySeries,
   disclaimers,
   getSpecs,
   lineup,
@@ -25,7 +26,7 @@ modelsRouter.get('/:id', (req, res) => {
     res.status(404).json({ error: `Model "${req.params.id}" not found` });
     return;
   }
-  res.json({ model: page, lineup, offers, accessories, disclaimers });
+  res.json({ model: page, lineup, offers, accessories, accessorySeries, disclaimers });
 });
 
 const specsQuery = z.object({

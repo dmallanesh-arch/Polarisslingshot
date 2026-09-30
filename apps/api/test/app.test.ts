@@ -65,7 +65,7 @@ describe('Slingshot API', () => {
   it('creates a quote', async () => {
     const res = await request(app).post('/api/quotes').send({
       modelId: 'sl',
-      colorId: 'blue-rush',
+      colorId: 'earth-blue',
       transmission: 'manual',
       email: 'rider@example.com',
       postal: 'v6b1a1',

@@ -1,6 +1,7 @@
 'use client';
 
 import { isValidPostalCode, type Dealer } from '@slingshot/shared';
+import Image from 'next/image';
 import { useState, type FormEvent } from 'react';
 
 type Status =
@@ -31,18 +32,15 @@ export function DealerLocator() {
   }
 
   return (
-    <section className="dealer" id="dealer" aria-labelledby="dealer-title">
+    <section className="dealer section" id="dealer" aria-labelledby="dealer-title">
       <div className="container dealer__inner">
-        <div className="dealer__card reveal" id="demo">
-          <p className="eyebrow">Experience it</p>
-          <h2 className="h2">Book a demo ride</h2>
-          <p>Nothing compares to getting behind the wheel. Rent or demo a Slingshot near you.</p>
-          <a className="btn btn--ghost" href="#dealer">Find a demo</a>
+        <div className="dealer__copy">
+          <Image src="/images/tools/test-drive.png" alt="" width={50} height={50} />
+          <h2 className="section-title" id="dealer-title">Find A Dealer Near You</h2>
+          <p>Enter your postal code to find a dealer, local pricing and demo rides near you.</p>
         </div>
 
-        <div className="dealer__card dealer__card--accent reveal">
-          <p className="eyebrow">Find a dealer</p>
-          <h2 className="h2" id="dealer-title">Visit your local dealer</h2>
+        <div className="dealer__search">
           <form className="dealer__form" onSubmit={onSubmit} noValidate>
             <label htmlFor="postal" className="visually-hidden">Postal code</label>
             <input

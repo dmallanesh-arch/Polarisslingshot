@@ -1,11 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { Barlow, Barlow_Condensed } from 'next/font/google';
+import { Barlow_Condensed, Inter } from 'next/font/google';
 import './globals.css';
 
-const barlow = Barlow({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-barlow',
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -28,14 +27,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0b0b0c',
+  themeColor: '#000000',
   width: 'device-width',
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-CA" className={`${barlow.variable} ${barlowCondensed.variable}`}>
+    <html lang="en-CA" className={`${inter.variable} ${barlowCondensed.variable}`}>
       <body>{children}</body>
     </html>
   );

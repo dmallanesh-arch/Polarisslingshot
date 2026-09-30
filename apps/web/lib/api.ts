@@ -1,11 +1,13 @@
 import 'server-only';
 import {
   accessories,
+  accessorySeries,
   disclaimers,
   lineup,
   offers,
   slingshotSL,
   type Accessory,
+  type AccessorySeries,
   type LineupModel,
   type ModelPage,
   type Offer,
@@ -16,12 +18,13 @@ export interface ModelPageData {
   lineup: LineupModel[];
   offers: Offer[];
   accessories: Accessory[];
+  accessorySeries: AccessorySeries[];
   disclaimers: typeof disclaimers;
 }
 
 const API_URL = process.env.API_URL ?? 'http://localhost:4000';
 
-const fallback: ModelPageData = { model: slingshotSL, lineup, offers, accessories, disclaimers };
+const fallback: ModelPageData = { model: slingshotSL, lineup, offers, accessories, accessorySeries, disclaimers };
 
 /**
  * Loads page content from the Express API (revalidated every 5 minutes).

@@ -1,17 +1,17 @@
-import { formatCAD, specHighlights } from '@slingshot/shared';
+import { formatCAD } from '@slingshot/shared';
 import type { Metadata } from 'next';
-import { Compare } from '@/components/Compare';
+import { AccessorySeries } from '@/components/AccessorySeries';
+import { AlsoLike } from '@/components/AlsoLike';
 import { DealerLocator } from '@/components/DealerLocator';
-import { Features, Marquee } from '@/components/Features';
+import { FeatureCarousel } from '@/components/FeatureCarousel';
 import { Footer } from '@/components/Footer';
 import { Gallery } from '@/components/Gallery';
-import { Header, UtilityBar } from '@/components/Header';
-import { ModelNav } from '@/components/ModelNav';
-import { RevealObserver } from '@/components/Reveal';
-import { Accessories, BuildCta, Disclaimers, Offers } from '@/components/Sections';
-import { Showroom } from '@/components/Showroom';
-import { Specs } from '@/components/Specs';
-import { Stats } from '@/components/Stats';
+import { Header, PromoBar } from '@/components/Header';
+import { Hero } from '@/components/Hero';
+import { Apparel, Disclaimers, KeySpecs, PromoBanner, ShoppingTools } from '@/components/Sections';
+import { Spin } from '@/components/Spin';
+import { SubNav } from '@/components/SubNav';
+import { TrimColor } from '@/components/TrimColor';
 import { getModelPage } from '@/lib/api';
 
 export const revalidate = 300;
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SlingshotSLPage() {
-  const { model, lineup, offers, accessories, disclaimers } = await getModelPage('sl');
+  const { model, lineup, offers, accessorySeries, disclaimers } = await getModelPage('sl');
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -46,27 +46,27 @@ export default async function SlingshotSLPage() {
   return (
     <>
       <a className="skip-link" href="#main">Skip to content</a>
-      <UtilityBar />
+      <PromoBar />
       <Header lineup={lineup} />
-      <ModelNav year={model.year} name={model.name} />
 
       <main id="main">
-        <Showroom model={model} />
-        <Stats items={model.highlights} />
-        <Features features={model.features} />
-        <Marquee />
-        <Specs highlights={specHighlights} />
-        <Gallery items={model.gallery} colors={model.colors} />
-        <Compare lineup={lineup} />
-        <BuildCta />
-        <Offers offers={offers} legal={disclaimers.offers} />
-        <Accessories items={accessories} />
+        <Hero model={model} />
+        <SubNav name={model.name} />
+        <TrimColor model={model} />
+        <PromoBanner offer={offers[0]} legal={disclaimers.offers} />
+        <FeatureCarousel name={model.name} features={model.features} />
+        <KeySpecs specs={model.keySpecs} color={model.colors[0]} />
+        <Spin model={model} />
+        <Gallery items={model.gallery} />
+        <AlsoLike lineup={lineup} />
+        <AccessorySeries series={accessorySeries} />
+        <Apparel />
+        <ShoppingTools />
         <DealerLocator />
         <Disclaimers price={disclaimers.price} safety={disclaimers.safety} />
       </main>
 
       <Footer lineup={lineup} />
-      <RevealObserver />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>
   );

@@ -6,30 +6,31 @@ A full-stack recreation of the **2026 Slingshot SL** model page (en-CA), built a
 | --- | --- | --- |
 | Web | **Next.js 15.5** (App Router, React 19, `next/font`) | `apps/web` |
 | API | **Express 5** + Zod, bundled with tsup | `apps/api` |
-| Mobile | **React Native 0.86 / Expo SDK 57** + react-native-svg | `apps/mobile` |
-| Shared | Content, specs, vehicle SVG geometry, validators | `packages/shared` |
+| Mobile | **React Native 0.86 / Expo SDK 57** | `apps/mobile` |
+| Shared | Content, specs, image paths, validators | `packages/shared` |
 
-All three apps read from `@slingshot/shared`, so copy, prices, specs and the vehicle
-illustration only ever change in one place.
+All three apps read from `@slingshot/shared`, so copy, prices, specs and image paths only
+ever change in one place. The layout follows the slingshot.polaris.com model pages, and all
+photography lives in `apps/web/public/images` (the mobile app bundles the same files).
 
 ![Web hero](docs/screenshots/web-hero.png)
 
 <p>
-  <img src="docs/screenshots/web-configurator.png" width="64%" alt="Colour and transmission configurator">
-  <img src="docs/screenshots/mobile-hero.png" width="17%" alt="Mobile app hero">
-  <img src="docs/screenshots/mobile-dealer.png" width="17%" alt="Mobile dealer locator">
+  <img src="docs/screenshots/web-configurator.png" width="74%" alt="Transmission and colour options">
+  <img src="docs/screenshots/web-mobile.png" width="22%" alt="Phone layout">
 </p>
 
 ## Page sections
 
-Utility bar (offer, dealer, EN/FR) · sticky header with **Models mega-menu**, search overlay and
-mobile drawer · sticky **model sub-nav** with scroll-spy · **hero** with starting MSRP and CTAs ·
-**colour + transmission configurator** (White Lightning, Blue Rush, Sunburst Orange / Manual,
-AutoDrive) that recolours the vehicle live · animated **key stats** · four **feature** blocks
-(front end, 7″ RIDE COMMAND®, Stage 2 Rockford Fosgate® 200 W, 180 HP ProStar® 2.0L) ·
-**spec sheet** accordion per transmission with print styles · **gallery** with keyboard lightbox ·
-**lineup compare** carousel · Build & Price CTA · offers · accessories · **dealer locator**
-(postal-code search against the API) · newsletter · footer · legal disclaimers.
+Promo bar · black header with **Vehicles mega-menu** (real lineup photos), search overlay and
+mobile drawer · full-bleed photo **hero** with starting MSRP, Build Yours and Get Local Price ·
+sticky **sub-nav** (Overview, Features, Specs, Compare) with scroll-spy · **Transmission & Color
+Options** (White Lightning, Earth Blue, Spectra Orange / Manual, AutoDrive) with studio photos ·
+offer banner · 7-slide **features carousel** · **key specifications** · **Take it for a spin**
+colour viewer with standard equipment and the full **spec sheet** accordion (print styles) ·
+**The Drive Starts Here** photo gallery with keyboard lightbox · **You may also like** lineup
+carousel · **Arrive in your style** accessory-series tabs · apparel banner · shopping tools ·
+**dealer locator** (postal-code search against the API) · legal disclaimers · newsletter · footer.
 
 ## Getting started
 
@@ -85,9 +86,11 @@ Connect these to your CRM or database before going live.
 - **Verify all figures.** Prices and specs come from public sources and are marked in
   `packages/shared/src/data.ts`. Check them against the official spec sheet, especially the
   AutoDrive curb weight and the R / Signature Edition prices, which are shown as "see dealer".
-- **Imagery.** The vehicle is a vector illustration so it can be recoloured live. To use real
-  photography, drop licensed images into `apps/web/public` and swap them in for `<Vehicle />`
-  in the relevant sections.
+- **Imagery.** Photos in `apps/web/public/images` were downloaded from Polaris's CDN
+  (cdn1.polaris.com) and are Polaris's copyrighted material. The vehicle and colour shots are
+  the 2026 Slingshot SL; the lifestyle scenes (hero, features, gallery, accessories) are
+  Slingshot S photos, because no SL-specific scenes were available. Replace them with licensed
+  SL photography where it matters, and confirm you have the rights before deploying.
 - **Trademarks.** Slingshot, Polaris, RIDE COMMAND, ProStar and AutoDrive are trademarks of
   Polaris Inc. Rockford Fosgate, Apple CarPlay and Bluetooth belong to their owners. Only
   deploy this publicly if you're authorised to use these marks (for example as a dealer).

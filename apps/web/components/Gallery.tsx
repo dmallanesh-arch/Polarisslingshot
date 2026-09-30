@@ -1,15 +1,15 @@
 'use client';
 
-import type { GalleryItem, PaintColor } from '@slingshot/shared';
+import type { GalleryItem } from '@slingshot/shared';
+import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, CloseIcon, ZoomIcon } from './Icons';
-import { Vehicle } from './Vehicle';
+import { ChevronLeft, ChevronRight, CloseIcon } from './Icons';
 
-export function Gallery({ items, colors }: { items: GalleryItem[]; colors: PaintColor[] }) {
+/** "The drive starts here": photo mosaic that opens a keyboard-navigable lightbox. */
+export function Gallery({ items }: { items: GalleryItem[] }) {
   const [index, setIndex] = useState<number | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const lastTrigger = useRef<HTMLElement | null>(null);
-  const paintOf = (id: string) => colors.find((c) => c.id === id) ?? colors[0];
 
   const close = useCallback(() => {
     setIndex(null);
@@ -39,45 +39,36 @@ export function Gallery({ items, colors }: { items: GalleryItem[]; colors: Paint
   const current = index === null ? null : items[index];
 
   return (
-    <section className="gallery" id="gallery" aria-labelledby="gallery-title">
+    <section className="gallery section" id="gallery" aria-labelledby="gallery-title">
       <div className="container">
-        <header className="section-head reveal">
-          <p className="eyebrow">Gallery</p>
-          <h2 className="h1" id="gallery-title">See it <em>in motion</em></h2>
-        </header>
+        <h2 className="section-title" id="gallery-title">The Drive Starts Here</h2>
         <div className="gallery__grid">
-          {items.map((item, i) => {
-            const c = paintOf(item.colorId);
-            return (
-              <button
-                key={i}
-                className={`gallery__item scene--${item.scene}`}
-                aria-label={`Open image: ${item.caption}`}
-                onClick={(e) => {
-                  lastTrigger.current = e.currentTarget;
-                  setIndex(i);
-                }}
-              >
-                <Vehicle id={`gal-${i}`} paint={c.paint} accent={c.accent} />
-                <span className="gallery__caption">{item.caption}</span>
-                <span className="gallery__zoom"><ZoomIcon /></span>
-              </button>
-            );
-          })}
+          {items.map((item, i) => (
+            <button
+              key={item.src}
+              className="gallery__item"
+              aria-label={`Open image: ${item.caption}`}
+              onClick={(e) => {
+                lastTrigger.current = e.currentTarget;
+                setIndex(i);
+              }}
+            >
+              <Image src={item.src} alt="" fill sizes={i === 0 ? '(max-width: 767px) 100vw, 66vw' : '(max-width: 767px) 50vw, 33vw'} />
+              <span className="gallery__cta"><span aria-hidden="true">+</span> View Gallery</span>
+            </button>
+          ))}
         </div>
       </div>
 
       {current && index !== null && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={current.caption} onClick={(e) => e.target === e.currentTarget && close()}>
-          <button ref={closeRef} className="icon-btn lightbox__close" aria-label="Close" onClick={close}><CloseIcon /></button>
-          <button className="icon-btn lightbox__nav" aria-label="Previous image" onClick={() => step(-1)}><ChevronLeft /></button>
+          <button ref={closeRef} className="lightbox__close" aria-label="Close" onClick={close}><CloseIcon /></button>
+          <button className="round-btn lightbox__nav" aria-label="Previous image" onClick={() => step(-1)}><ChevronLeft /></button>
           <figure className="lightbox__figure">
-            <div className={`scene--${current.scene}`}>
-              <Vehicle id="lightbox" paint={paintOf(current.colorId).paint} accent={paintOf(current.colorId).accent} title={current.caption} />
-            </div>
-            <figcaption>{current.caption} · {index + 1} / {items.length}</figcaption>
+            <Image src={current.src} alt={current.caption} width={1920} height={860} sizes="90vw" />
+            <figcaption>{current.caption} ({index + 1} / {items.length})</figcaption>
           </figure>
-          <button className="icon-btn lightbox__nav" aria-label="Next image" onClick={() => step(1)}><ChevronRight /></button>
+          <button className="round-btn lightbox__nav" aria-label="Next image" onClick={() => step(1)}><ChevronRight /></button>
         </div>
       )}
     </section>

@@ -1,81 +1,77 @@
-import type { Accessory, Offer } from '@slingshot/shared';
-import { AccessoryGlyph } from './Icons';
-import { Vehicle } from './Vehicle';
+import type { KeySpec, Offer, PaintColor } from '@slingshot/shared';
+import Image from 'next/image';
 
-export function BuildCta() {
+export function PromoBanner({ offer, legal }: { offer: Offer; legal: string }) {
   return (
-    <section className="build" id="build" aria-labelledby="build-title">
-      <div className="container build__inner">
-        <div className="build__copy reveal">
-          <p className="eyebrow">Build &amp; Price</p>
-          <h2 className="h1" id="build-title">Make it <em>unmistakably</em> yours</h2>
-          <p>
-            Select your transmission, add performance accessories, seats, wind deflectors, storage,
-            style accents and more — then send your build straight to your local dealer.
-          </p>
-          <ol className="steps">
-            <li><span>1</span>Choose model &amp; transmission</li>
-            <li><span>2</span>Pick your colour</li>
-            <li><span>3</span>Add accessories</li>
-            <li><span>4</span>Get a quote</li>
-          </ol>
-          <a className="btn btn--primary" href="#colors">Start Building</a>
-        </div>
-        <div className="build__vehicle reveal">
-          <Vehicle id="build" paint="#1f5ad6" />
-        </div>
-      </div>
+    <section className="promo" id="offers" aria-label="Current offer">
+      <a className="promo__link" href="#dealer">
+        <Image src="/images/scenes/promo.jpg" alt="" fill sizes="100vw" />
+        <span className="promo__copy">
+          <strong>{offer.title}</strong>
+          <span className="btn btn--light-outline btn--sm">Explore Offers</span>
+        </span>
+      </a>
+      <p className="container promo__legal">{legal}</p>
     </section>
   );
 }
 
-export function Offers({ offers, legal }: { offers: Offer[]; legal: string }) {
+export function KeySpecs({ specs, color }: { specs: KeySpec[]; color: PaintColor }) {
   return (
-    <section className="offers" id="offers" aria-labelledby="offers-title">
+    <section className="key-specs section" id="specs" aria-labelledby="key-specs-title">
       <div className="container">
-        <header className="section-head reveal">
-          <p className="eyebrow">Current offers</p>
-          <h2 className="h1" id="offers-title">Offers &amp; financing</h2>
-        </header>
-        <div className="offers__grid">
-          {offers.map((o) => (
-            <article className="offer reveal" key={o.title}>
-              <p className="offer__tag">{o.tag}</p>
-              <h3 className="h3">{o.title}</h3>
-              <p>{o.body}</p>
-              <a className="link-arrow" href="#dealer">{o.cta}</a>
-            </article>
-          ))}
-        </div>
-        <p className="legal">{legal}</p>
-      </div>
-    </section>
-  );
-}
-
-export function Accessories({ items }: { items: Accessory[] }) {
-  return (
-    <section className="accessories" id="accessories" aria-labelledby="acc-title">
-      <div className="container">
-        <header className="section-head section-head--row reveal">
-          <div>
-            <p className="eyebrow">Accessories</p>
-            <h2 className="h1" id="acc-title">Gear up your SL</h2>
+        <h2 className="section-title" id="key-specs-title">Key Specifications</h2>
+        <div className="key-specs__grid">
+          <div className="key-specs__media">
+            <Image src={color.image} alt={`Slingshot SL in ${color.name}`} width={768} height={432} sizes="(max-width: 991px) 100vw, 55vw" />
           </div>
-          <a className="link-arrow" href="#accessories">Shop all accessories</a>
-        </header>
-        <ul className="acc__grid">
-          {items.map((a) => (
-            <li className="acc-card reveal" key={a.name}>
-              <a href="#accessories">
-                <AccessoryGlyph icon={a.icon} />
-                <small>{a.category}</small>
-                <strong>{a.name}</strong>
-              </a>
-            </li>
-          ))}
-        </ul>
+          <dl className="key-specs__list">
+            {specs.map((s) => (
+              <div key={s.label}>
+                <dt>{s.label}</dt>
+                <dd>{s.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
+    </section>
+  );
+}
+
+export function Apparel() {
+  return (
+    <section className="apparel" id="apparel" aria-labelledby="apparel-title">
+      <Image src="/images/scenes/apparel.jpg" alt="" fill sizes="100vw" />
+      <div className="container apparel__copy">
+        <h2 className="section-title" id="apparel-title">Gear That Makes A Statement</h2>
+        <p>Make sure the only thing making a bigger statement than your Slingshot is your gear.</p>
+        <a className="btn btn--light-outline" href="#footer">Shop Clothing &amp; Gear</a>
+      </div>
+    </section>
+  );
+}
+
+const TOOLS = [
+  { icon: 'test-drive', label: 'Schedule A Test Drive', href: '#dealer' },
+  { icon: 'build-and-price', label: 'Build Yours', href: '#trim' },
+  { icon: 'get-a-quote', label: 'Get Internet Price', href: '#dealer' },
+  { icon: 'estimated-trade-in', label: 'Estimate Trade-In', href: '#dealer' },
+];
+
+export function ShoppingTools() {
+  return (
+    <section className="tools" id="tools" aria-label="Shopping tools">
+      <ul className="container tools__list">
+        {TOOLS.map((t) => (
+          <li key={t.label}>
+            <a href={t.href}>
+              <Image src={`/images/tools/${t.icon}.png`} alt="" width={50} height={50} />
+              <span>{t.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
@@ -84,8 +80,12 @@ export function Disclaimers({ price, safety }: { price: string; safety: string }
   return (
     <section className="disclaimers" aria-label="Disclaimers">
       <div className="container">
-        <p id="disclaimer-price">{price}</p>
+        <p>{price}</p>
         <p>{safety}</p>
+        <p>
+          All pricing, specifications, claims, and information contained on this website are based upon current
+          knowledge available at time of publication and are subject to change without notice.
+        </p>
       </div>
     </section>
   );

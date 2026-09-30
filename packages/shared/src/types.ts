@@ -9,6 +9,10 @@ export interface PaintColor {
   accent: string;
   /** Two-stop gradient used for swatches: [light, dark]. */
   swatch: [string, string];
+  /** Studio photo of the vehicle in this colour (web public path). */
+  image: string;
+  /** Round paint-chip photo (web public path). */
+  swatchImage: string;
 }
 
 export interface Transmission {
@@ -38,13 +42,15 @@ export interface LineupModel {
   tag: string;
   current?: boolean;
   bullets: string[];
+  /** One-line pitch shown on lineup cards. */
+  blurb: string;
+  /** Studio photo (web public path). */
+  image: string;
 }
 
-export type GalleryScene = 'sunset' | 'night' | 'studio' | 'mountain';
-
 export interface GalleryItem {
-  colorId: string;
-  scene: GalleryScene;
+  /** Photo (web public path). */
+  src: string;
   caption: string;
 }
 
@@ -60,7 +66,19 @@ export interface Feature {
   id: string;
   title: string;
   body: string;
-  bullets: string[];
+  /** Photo (web public path). */
+  image: string;
+}
+
+export interface KeySpec {
+  label: string;
+  value: string;
+}
+
+export interface AccessorySeries {
+  name: string;
+  /** Photo (web public path). */
+  image: string;
 }
 
 export interface Offer {
@@ -91,6 +109,11 @@ export interface ModelPage {
   colors: PaintColor[];
   transmissions: Transmission[];
   highlights: Highlight[];
+  /** Short marketing paragraph for the trim & colour section. */
+  story: string;
   features: Feature[];
+  keySpecs: KeySpec[];
+  /** Standard equipment called out next to the vehicle viewer. */
+  equipment: string[];
   gallery: GalleryItem[];
 }
